@@ -1,31 +1,45 @@
 'use strict';
-var RSVP = require('rsvp');
 
 var CSSFontLoader = function() {
 
+  var _Promise = null;
+  var _url = null;
+
+  if(typeof Promise !== 'undefined' && Promise.toString().indexOf('[native code]') !== -1){ // check if there is native promise support.
+      _Promise = Promise;
+  }
+
   var api = {};
 
-  var startTime = new Date().getTime();
-  api.load = function(url) {
-    return new RSVP.Promise(
-      function (resolve, reject) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
+  api.load = function(url, callback) {
 
-        xhr.onreadystatechange = function() {
-          if (this.readyState !== 4) return;
-          if (this.status !== 200) return;
-          
-          var cssSource = String(this.responseText).replace(/ *local\([^)]*\), */g, ""); // remove all local references to force remote font file to be downloaded and used
-          
-          api.loadFromCSS(cssSource, resolve);
-        }
-
-        xhr.send();
-
-      }
-    )
+    if(callback){
+      api.downloadCSS(callback);
+    } else if(_Promise) { 
+      return new _Promise(api.downloadCSS) 
+    } else {
+      api.downloadCSS(function(){});
+    }
   }
+
+  api.setPromise = function(promiseLib) { _Promise = promiseLib };
+
+  api.downloadCSS = function (resolve, reject) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+
+    xhr.onreadystatechange = function() {
+      if (this.readyState !== 4) return;
+      if (this.status !== 200) return;
+      
+      var cssSource = String(this.responseText).replace(/ *local\([^)]*\), */g, ''); // remove all local references to force remote font file to be downloaded and used
+      
+      api.loadFromCSS(cssSource, resolve);
+    }
+
+    xhr.send();
+
+  };
 
   api.loadFromCSS = function(cssSource, callback){
     var cssOriginal = cssSource;
@@ -48,7 +62,6 @@ var CSSFontLoader = function() {
     var fontsToLoad = getCSSFonts(cssSource);
 
     api.waitForWebfonts(fontsToLoad, function() {
-      //styleTag.innerHTML = styleTag.innerHTML+cssOriginal;
       if(callback) callback(); 
     });
   }
@@ -63,7 +76,7 @@ var CSSFontLoader = function() {
       var weight = font.weight;
       var style = font.style;
 
-      console.log('build font test for:', family, weight, style);
+      console.log('Checking font:', family, weight, style);
 
       var testNode = createFontTestNode(family, weight, style);
       testNodes.push({elem:testNode,width:testNode.offsetWidth});
@@ -98,7 +111,7 @@ var CSSFontLoader = function() {
     }
   };
 
-  function createFontTestNode(family, weight, style){
+  function createFontTestNode(family, weight, style) {
     var node = document.createElement('span');
     node.innerHTML = 'giItT1WQy@!-/#'; // Characters that vary significantly among different fonts
     node.style.position      = 'absolute'; // Visible - so we can measure it - but not on the screen
