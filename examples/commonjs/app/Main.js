@@ -1,6 +1,6 @@
 'use strict';
 
-var CSSFontLoader = require('../../../src/loaders/CSSFontLoader');
+var CSSFontLoader = require('../../../src/loaders/CSSFontLoader')();
 
 function Main() {
   console.log('Main: instance');
@@ -11,6 +11,8 @@ function Main() {
 
   function fontsLoaded() {
     console.log('Fonts Loaded.');
+    container.classList.remove('hidden');
+    loadText.classList.add('hidden');
   }
 }
 

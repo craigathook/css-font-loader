@@ -5,11 +5,34 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="js/alpha-jpeg.js"></script>
-    <link rel="stylesheet" href="css/index.css">
+    <script src="js/css-font-loader.js"></script>
   </head>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .hidden {
+      visibility: hidden;
+    }
+
+    #indieFlower {
+      float: left;
+      padding: 20px;
+      font-size: 30px;
+      font-family: 'Indie Flower';
+    }
+    #roboto {
+      float:left;
+      padding: 20px;
+      font-size: 30px;
+      font-family: 'Roboto';
+    }
+  </style>
   <body>
-    <div id="container">
+    <div id="loadText">Loading Fonts...</div>
+    <div id="container" class="hidden">
+      <div id="indieFlower">Indie Flower</div>
+      <div id="roboto">Roboto</div>
     </div>
     <script>
 
@@ -17,21 +40,19 @@
 
         console.log('init');
 
-        var imageURL = 'images/example-orig-small.jpg';
-        var container = document.getElementById('container');
+        var cssFontURL = 'https://fonts.googleapis.com/css?family=Indie+Flower|Roboto';
 
-        AlphaJPEG.load(container, imageURL, { mode: 'svg', onComplete: function(elem){
-          console.log('AlphaJPEG loaded');
-          elem.onclick = imageClicked;
-        }});
+        CSSFontLoader.load(cssFontURL, fontsLoaded);
 
-        function imageClicked() {
-          console.log('Image clicked.');
+        function fontsLoaded() {
+          console.log('Fonts Loaded.');
+          container.classList.remove('hidden');
+          loadText.classList.add('hidden');
         }
 
       }
 
-      init();
+      window.onload = init;
 
     </script>
   </body>

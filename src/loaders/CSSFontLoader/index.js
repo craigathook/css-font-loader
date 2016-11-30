@@ -11,7 +11,10 @@ var CSSFontLoader = function() {
 
   var api = {};
 
+  api.setPromise = function(promiseLib) { _Promise = promiseLib };
+
   api.load = function(url, callback) {
+    _url = url;
 
     if(callback){
       api.downloadCSS(callback);
@@ -22,11 +25,9 @@ var CSSFontLoader = function() {
     }
   }
 
-  api.setPromise = function(promiseLib) { _Promise = promiseLib };
-
   api.downloadCSS = function (resolve, reject) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
+    xhr.open('GET', _url, true);
 
     xhr.onreadystatechange = function() {
       if (this.readyState !== 4) return;
@@ -55,19 +56,21 @@ var CSSFontLoader = function() {
       cssSource = String(cssSource).replace(regex, '\'' + font.family + '\'', 'g'); // replace the font family name.
     }
     
-    document.body.appendChild(styleTag);
-    styleTag.setAttribute('type', 'text/css');
     styleTag.innerHTML = cssSource;
+    document.head.appendChild(styleTag);
     
     var fontsToLoad = getCSSFonts(cssSource);
 
+    //console.log(fontsToLoad);
+
     api.waitForWebfonts(fontsToLoad, function() {
+      //styleTag.innerHTML = styleTag.innerHTML+cssOriginal;
       if(callback) callback(); 
     });
   }
 
   api.waitForWebfonts = function(fonts, callback) {
-    console.log('waitForWebfonts', fonts);
+    //console.log('waitForWebfonts', fonts);
     var loadedFonts = 0;
     var testNodes = [];
     for(var i = 0, l = fonts.length; i < l; ++i) {
@@ -76,7 +79,7 @@ var CSSFontLoader = function() {
       var weight = font.weight;
       var style = font.style;
 
-      console.log('Checking font:', family, weight, style);
+      // console.log('build font test for:', family, weight, style);
 
       var testNode = createFontTestNode(family, weight, style);
       testNodes.push({elem:testNode,width:testNode.offsetWidth});
@@ -89,7 +92,7 @@ var CSSFontLoader = function() {
   
   function checkFonts(nodes, callback) {
     // Compare current width with original width
-    console.log('checking');
+    //console.log('checking');
     var pass = true;
     for(var n in nodes){
       var node = nodes[n];
@@ -111,15 +114,15 @@ var CSSFontLoader = function() {
     }
   };
 
-  function createFontTestNode(family, weight, style) {
+  function createFontTestNode(family, weight, style){
     var node = document.createElement('span');
-    node.innerHTML = 'giItT1WQy@!-/#'; // Characters that vary significantly among different fonts
+    node.innerHTML = '9giItT1WQy@!-/#'; // Characters that vary significantly among different fonts
     node.style.position      = 'absolute'; // Visible - so we can measure it - but not on the screen
     // node.style.display = 'block'; // for debug
     // node.style.float = 'left'; // for debug
     node.style.left          = '-10000px';
     node.style.top           = '-10000px';
-    node.style.fontSize      = '300px'; // Large font size makes even subtle changes obvious
+    // node.style.fontSize      = '300px'; // Large font size makes even subtle changes obvious
     // Reset any font properties
     node.style.fontFamily    = 'sans-serif';
     node.style.fontVariant   = 'normal';
@@ -138,10 +141,11 @@ var CSSFontLoader = function() {
     for(var f in fontCSS) {
       var css = fontCSS[f];
       var font = {};
-      font.weight = getCSSPropertyValues('font-weight', css)[0].replace(/["'\s]+/g, '');
-      font.family = getCSSPropertyValues('font-family', css)[0].replace(/["'\s]+/g, '');
-      font.style = getCSSPropertyValues('font-style', css)[0].replace(/["'\s]+/g, '');
+      font.weight = getCSSPropertyValues('font-weight', css)[0].replace(/["']+/g, '');
+      font.family = getCSSPropertyValues('font-family', css)[0].replace(/["']+/g, '');
+      font.style = getCSSPropertyValues('font-style', css)[0].replace(/["']+/g, '');
       fonts.push(font);
+      //console.log('family', font.family);
     }
     window.fonts = fonts;
     fonts = removeDuplicateObjects(fonts);
@@ -172,11 +176,12 @@ var CSSFontLoader = function() {
     var match; 
     while (match = regex.exec(cssSource)) {
       if(results) {
-        results.push(match[1]);
+        results.push(match[1].replace(/[ \t]+/, ''));
       } else {
-        results = [match[1]];
+        results = [match[1].replace(/[ \t]+/, '')];
       }
     }
+
     return results;
   }
   

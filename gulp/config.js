@@ -60,7 +60,7 @@ var config = {
   build: {
     app: {
       src: ['./src/**/*.js'],
-      entry: './src/alpha-jpeg.js'
+      entry: './src/css-font-loader.js'
     },
     tests: {
       src: './tests/**/*.js'

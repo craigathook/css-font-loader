@@ -5,10 +5,33 @@
     <title></title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/index.css">
   </head>
+  <style>
+    body {
+      font-family: sans-serif;
+    }
+    .hidden {
+      visibility: hidden;
+    }
+
+    #indieFlower {
+      float: left;
+      padding: 20px;
+      font-size: 30px;
+      font-family: 'Indie Flower';
+    }
+    #roboto {
+      float:left;
+      padding: 20px;
+      font-size: 30px;
+      font-family: 'Roboto';
+    }
+  </style>
   <body>
-    <div id="container">
+    <div id="loadText">Loading Fonts...</div>
+    <div id="container" class="hidden">
+      <div id="indieFlower">Indie Flower</div>
+      <div id="roboto">Roboto</div>
     </div>
     <script src="js/main.build.js"></script>
   </body>

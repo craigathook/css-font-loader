@@ -17,7 +17,7 @@ There are 3 ways to use CSS Font Loader:
 
 And just require it:
 
-	var CSSFontLoader = require('css-font-loader');
+	var CSSFontLoader = require('css-font-loader')();
 
 **Script Tag**
 
