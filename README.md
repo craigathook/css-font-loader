@@ -42,18 +42,18 @@ Save it anywhere you like in your development environment, and include it like n
 # Usage
 
 1. Create a CSS file with @font-face references to all the fonts you'd like to load using @font-face. For this example, lets call our CSS file **myFonts.css** and add this webfont to it:
-
-	@font-face {
-	  font-family: 'Roboto';
-	  font-style: normal;
-	  font-weight: 400;
-	  src: url(https://fonts.gstatic.com/s/roboto/v15/ek4gzZ-GeXAPcSbHtCeQI_esZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
-	}
-
+~~~~
+@font-face {
+	font-family: 'Roboto';
+	font-style: normal;
+	font-weight: 400;
+	src: url(https://fonts.gstatic.com/s/roboto/v15/ek4gzZ-GeXAPcSbHtCeQI_esZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
+}
+~~~~
 2. Then load the fonts like this:
-
-    CSSFontLoader.load('fonts/myFonts.css', function(){ console.log('Fonts loaded.') });
-
+~~~~
+CSSFontLoader.load('fonts/myFonts.css', function(){ console.log('Fonts loaded.') });
+~~~~
 If you preffer to load the javascript libraries directly using script tags or other methods, you can use this stand-alone version of the library:
 
 	/build/css-font-loader.min.js
