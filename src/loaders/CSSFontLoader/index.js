@@ -223,4 +223,4 @@ var CSSFontLoader = function() {
   return api;
 }
 
-module.exports = CSSFontLoader;
+module.exports = CSSFontLoader();

@@ -1,6 +1,6 @@
 'use strict';
 
-var CSSFontLoader = require('../../../src/loaders/CSSFontLoader')();
+var CSSFontLoader = require('../../../src/loaders/CSSFontLoader');
 
 function Main() {
   console.log('Main: instance');
