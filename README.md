@@ -17,7 +17,7 @@ There are 3 ways to use CSS Font Loader:
 
 And just require it:
 
-	var CSSFontLoader = require('css-font-loader')();
+	var CSSFontLoader = require('css-font-loader');
 
 **Script Tag**
 
@@ -41,7 +41,7 @@ Save it anywhere you like in your development environment, and include it like n
 
 # Usage
 
-1. Create a CSS file with @font-face references to all the fonts you'd like to load using @font-face. For this example, lets call our CSS file **myFonts.css** and add this webfont to it:
+Create a CSS file with @font-face references to all the fonts you'd like to load using @font-face. For this example, lets call our CSS file **myFonts.css** and add this webfont to it:
 ~~~~
 @font-face {
 	font-family: 'Roboto';
@@ -50,7 +50,7 @@ Save it anywhere you like in your development environment, and include it like n
 	src: url(https://fonts.gstatic.com/s/roboto/v15/ek4gzZ-GeXAPcSbHtCeQI_esZW2xOQ-xsNqO47m55DA.woff2) format('woff2');
 }
 ~~~~
-2. Then load the fonts like this:
+Then load the fonts like this:
 ~~~~
 CSSFontLoader.load('fonts/myFonts.css', function(){ console.log('Fonts loaded.') });
 ~~~~

@@ -53,8 +53,10 @@ var CSSFontLoader = function() {
     for(var i in originalFonts) { // force css to use font family name in single quotes
       var font = originalFonts[i];
       var regex = new RegExp('[\'|"]' + font.family + '[\'|"]'   , 'g');
+      //font.family = font.family + new Date().getTime(); // make font family name unique.
       cssSource = String(cssSource).replace(regex, '\'' + font.family + '\'', 'g'); // replace the font family name.
     }
+
     
     styleTag.innerHTML = cssSource;
     document.head.appendChild(styleTag);
@@ -82,7 +84,7 @@ var CSSFontLoader = function() {
       // console.log('build font test for:', family, weight, style);
 
       var testNode = createFontTestNode(family, weight, style);
-      testNodes.push({elem:testNode,width:testNode.offsetWidth});
+      testNodes.push({ elem: testNode, width: testNode.offsetWidth });
       testNode.style.fontFamily = '\'' + family + '\', sans-serif';       
     }
     setTimeout(function(){
@@ -122,7 +124,7 @@ var CSSFontLoader = function() {
     // node.style.float = 'left'; // for debug
     node.style.left          = '-10000px';
     node.style.top           = '-10000px';
-    // node.style.fontSize      = '300px'; // Large font size makes even subtle changes obvious
+    node.style.fontSize      = '30000px'; // Large font size makes even subtle changes obvious
     // Reset any font properties
     node.style.fontFamily    = 'sans-serif';
     node.style.fontVariant   = 'normal';

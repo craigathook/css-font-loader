@@ -1,9 +1,9 @@
 {
   "name": "css-font-loader",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "license": "UNLICENSED",
   "description": "Load fonts from CSS files and know when they're fully loaded.",
-  "main": "src/loaders/CSSFontLoader.js",
+  "main": "src/loaders/CSSFontLoader/index.js",
   "private": false,
   "repository": {
     "type": "git",
@@ -19,7 +19,6 @@
     "font"
   ],
   "dependencies": {
-    "gulp-cli": "git://github.com/gulpjs/gulp-cli"  
   },
   "devDependencies": {
     "browser-sync": "^2.6.4",
@@ -28,6 +27,7 @@
     "chai": "^1.9.1",
     "del": "^1.1.1",
     "exorcist": "^0.1.6",
+    "gulp-cli": "git://github.com/gulpjs/gulp-cli",
     "gulp": "git://github.com/gulpjs/gulp.git#4.0",
     "gulp-cached": "^1.0.1",
     "gulp-concat": "^2.4.0",
@@ -62,13 +62,5 @@
   },
   "engines": {
     "node": ">=0.10.0"
-  },
-  "browserify-shim": {
-    "math": "global:Math"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-shim"
-    ]
   }
 }
