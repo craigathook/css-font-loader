@@ -46,7 +46,7 @@ var CSSFontLoader = function() {
     var cssOriginal = cssSource;
     var originalFonts = getCSSFonts(cssSource, true);
     
-    var styleTag = document.createElement('style');
+    
 
     var id = String(new Date().getTime());
     
@@ -57,8 +57,7 @@ var CSSFontLoader = function() {
     console.log('cssNew');
     console.log(cssNew);
 
-    styleTag.innerHTML = '';//cssSource;
-    document.head.appendChild(styleTag);
+    //styleTag.innerHTML = cssSource;
     
     var loadedFonts = -1;
     var fontsToLoad = getCSSFonts(cssSource);
@@ -84,7 +83,22 @@ var CSSFontLoader = function() {
           return isSameFont && isSameStyle && isSameWeight;
         });
 
+        fontToLoad.family = fontToLoad.family + fontToLoad.weight + fontToLoad.style + String(new Date().getTime());
+
+        var styleTag = null;
+
+        styleTag = document.createElement('style');
         styleTag.innerHTML += api.renderFontCSS(fontReferences);
+        document.head.appendChild(styleTag);
+
+        for(var f in fontReferences){
+          fontReferences[f].family = fontToLoad.family;
+        }
+
+        styleTag = document.createElement('style');
+        styleTag.innerHTML += api.renderFontCSS(fontReferences);
+        document.head.appendChild(styleTag);
+        
 
         api.waitForWebfont(fontToLoad, loadedCallback);
       } else {
@@ -171,8 +185,9 @@ var CSSFontLoader = function() {
     
     nodes.forEach(function(e){
       //var oldWidth = e.width;
-      e.elem.style.fontFamily = '\'' + e.family + '\', sans-serif';
       var newWidth = String(Number(e.elem.offsetWidth));
+      e.elem.style.fontFamily = '\'' + e.family + '\', sans-serif';
+      
       if(e.nullWidth != newWidth && e.sansWidth != newWidth && e.errorWidth != newWidth) {
         var matchOtherFontWidths = false;
         for(var n in nodes){
@@ -197,7 +212,7 @@ var CSSFontLoader = function() {
     if(loadedNodes.length == nodes.length){
       for(var n in nodes){
         var node = nodes[n];
-        node.elem.parentNode.removeChild(node.elem);
+        //node.elem.parentNode.removeChild(node.elem);
       }
       nodes = [];
       callback();
@@ -210,13 +225,15 @@ var CSSFontLoader = function() {
 
   function createFontTestNode(family, weight, style){
     var node = document.createElement('span');
-    node.innerHTML = '9giItT1WQy@!-/#'; // Characters that vary significantly among different fonts
-    node.style.position      = 'absolute'; // Visible - so we can measure it - but not on the screen
+    var testString = '9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#'; // Characters that vary significantly among different fonts
+    node.innerHTML = testString;
+    node.style.float = 'left';
+    //node.style.position      = 'absolute'; // Visible - so we can measure it - but not on the screen
     // node.style.display = 'block'; // for debug
     // node.style.float = 'left'; // for debug
-    node.style.left          = '-100000px';
-    node.style.top           = '-100000px';
-    node.style.fontSize      = '30000px'; // Large font size makes even subtle changes obvious
+    //node.style.left          = '-100000px';
+    //node.style.top           = '-100000px';
+    node.style.fontSize      = '30px'; // Large font size makes even subtle changes obvious
     // Reset any font properties
     //node.style.fontFamily    = 'LoadString45178';
     node.style.fontVariant   = 'normal';
@@ -224,7 +241,7 @@ var CSSFontLoader = function() {
     node.style.fontWeight    = weight;
     node.style.letterSpacing = '0';
     node.style.whiteSpace    = 'nowrap';
-    node.style.opacity       = 0;
+    //node.style.opacity       = 0;
     document.body.appendChild(node);
     
     return node;
