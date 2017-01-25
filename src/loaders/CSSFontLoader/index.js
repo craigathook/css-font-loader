@@ -2,6 +2,13 @@
 
 var CSSFontLoader = function() {
 
+  var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+  var isFirefox = typeof InstallTrigger !== 'undefined';
+  var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0 || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || safari.pushNotification);
+  var isIE = /*@cc_on!@*/false || !!document.documentMode;
+  var isEdge = !isIE && !!window.StyleMedia;
+  var isChrome = !!window.chrome && !!window.chrome.webstore;
+
   var _Promise = null;
   var _url = null;
 
@@ -45,31 +52,19 @@ var CSSFontLoader = function() {
   api.loadFromCSS = function(cssSource, callback){
     var cssOriginal = cssSource;
     var originalFonts = getCSSFonts(cssSource, true);
-    
-    
 
     var id = String(new Date().getTime());
     
     var cssNew = api.renderFontCSS(originalFonts);
 
-    console.log('cssNew');
-    console.log('cssNew');
-    console.log('cssNew');
-    console.log(cssNew);
-
-    //styleTag.innerHTML = cssSource;
-    
     var loadedFonts = -1;
     var fontsToLoad = getCSSFonts(cssSource);
     var fontsToReference = getCSSFonts(cssNew, true);
 
-    console.log('fontsToLoad',fontsToLoad);
+    //console.log('fontsToLoad',fontsToLoad);
 
     function loadedCallback() {
       loadedFonts++;
-      // add fontToLoad to css (full).
-      // get duplicates removed font
-      // load it.
 
       var fontToLoad = fontsToLoad[loadedFonts];
       if(fontToLoad) {
@@ -83,9 +78,15 @@ var CSSFontLoader = function() {
           return isSameFont && isSameStyle && isSameWeight;
         });
 
-        fontToLoad.family = fontToLoad.family + fontToLoad.weight + fontToLoad.style + String(new Date().getTime());
+        if(isChrome){
+          fontToLoad.family = fontToLoad.family;// + fontToLoad.weight + fontToLoad.style + String(new Date().getTime());
+        } else {
+          fontToLoad.family = fontToLoad.family + fontToLoad.weight + fontToLoad.style + String(new Date().getTime());
+        }
 
         var styleTag = null;
+
+        
 
         styleTag = document.createElement('style');
         styleTag.innerHTML += api.renderFontCSS(fontReferences);
@@ -95,14 +96,17 @@ var CSSFontLoader = function() {
           fontReferences[f].family = fontToLoad.family;
         }
 
-        styleTag = document.createElement('style');
-        styleTag.innerHTML += api.renderFontCSS(fontReferences);
-        document.head.appendChild(styleTag);
-        
+        if(!isChrome){
+
+          styleTag = document.createElement('style');
+          styleTag.innerHTML += api.renderFontCSS(fontReferences);
+          document.head.appendChild(styleTag);
+          
+        }
 
         api.waitForWebfont(fontToLoad, loadedCallback);
       } else {
-        console.log('done----');
+        //console.log('done----');
         //styleTag.innerHTML = cssOriginal;
         if(callback) callback();
       }
@@ -115,7 +119,7 @@ var CSSFontLoader = function() {
     var cssNew = '';
     for(var i in fonts) { // force css to use font family name in single quotes
       var font = fonts[i];
-      console.log(fonts);
+      //console.log(fonts);
       var uniqueName = font.family;// + font.weight + font.style + String(new Date().getTime());
 
       cssNew += '@font-face {\n';
@@ -128,8 +132,6 @@ var CSSFontLoader = function() {
 
       var regex = new RegExp('[\'|"]' + font.family + '[\'|"]'   , 'g');
       font.family = uniqueName; // make font family name unique.
-      //cssSource = String(cssSource).replace(regex, '\'' + font.family + '\'', 'g'); // replace the font family name.
-      //cssLoad = String(cssSource).replace(regex, '\'' + font.family + '\'', 'g'); // add unique font names for loader.
     }
     return cssNew;
   }
@@ -138,13 +140,10 @@ var CSSFontLoader = function() {
     //console.log('waitForWebfont', fonts);
     var loadedFonts = 0;
     var testNodes = [];
-    //for(var i = 0, l = fonts.length; i < l; ++i) {
-    //var font = fonts[i];
+
     var family = font.family;
     var weight = font.weight;
     var style = font.style;
-
-    // console.log('build font test for:', family, weight, style);
 
     var testNode = createFontTestNode(family, weight, style);
 
@@ -168,23 +167,17 @@ var CSSFontLoader = function() {
       loaded: false
     });
       
-      
-    //}
-    
-    testNodes.forEach(function(e){console.log(e.family, e.weight, e.style, e.nullWidth, e.sansWidth, e.errorWidth, e.elem.offsetWidth)})
-    console.log('====');
-    //setTimeout(function(){
+    //testNodes.forEach(function(e){console.log(e.family, e.weight, e.style, e.nullWidth, e.sansWidth, e.errorWidth, e.elem.offsetWidth)})
+    //console.log('====');
     checkFonts(testNodes, callback);
    
   }
   
   function checkFonts(nodes, callback) {
     // Compare current width with original width
-    
-    console.log('====');
+    //console.log('====');
     
     nodes.forEach(function(e){
-      //var oldWidth = e.width;
       var newWidth = String(Number(e.elem.offsetWidth));
       e.elem.style.fontFamily = '\'' + e.family + '\', sans-serif';
       
@@ -200,19 +193,17 @@ var CSSFontLoader = function() {
           
         }
         e.loaded = true;
-        //e.changeDetected++;
-        //e.width = newWidth;
         
       }
     });
     var loadedNodes = nodes.filter(function(e){
       return e.loaded;
     });
-    nodes.forEach(function(e){console.log(e.family, e.weight, e.style, e.nullWidth, e.sansWidth, e.errorWidth, e.elem.offsetWidth)})
+    //nodes.forEach(function(e){console.log(e.family, e.weight, e.style, e.nullWidth, e.sansWidth, e.errorWidth, e.elem.offsetWidth)})
     if(loadedNodes.length == nodes.length){
       for(var n in nodes){
         var node = nodes[n];
-        //node.elem.parentNode.removeChild(node.elem);
+        node.elem.parentNode.removeChild(node.elem);
       }
       nodes = [];
       callback();
@@ -260,7 +251,6 @@ var CSSFontLoader = function() {
       var unicode = getCSSPropertyValues('unicode-range', css);
       if(includeExtras && unicode) font.unicode = unicode[0].replace(/["']+/g, '');
       fonts.push(font);
-      //console.log('family', font.family);
     }
     window.fonts = fonts;
     fonts = removeDuplicateObjects(fonts);
