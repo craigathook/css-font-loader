@@ -228,11 +228,11 @@ var CSSFontLoader = function() {
     var testString = '9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#9giItT1WQy@!-/#'; // Characters that vary significantly among different fonts
     node.innerHTML = testString;
     node.style.float = 'left';
-    //node.style.position      = 'absolute'; // Visible - so we can measure it - but not on the screen
+    node.style.position      = 'absolute'; // Visible - so we can measure it - but not on the screen
     // node.style.display = 'block'; // for debug
     // node.style.float = 'left'; // for debug
-    //node.style.left          = '-100000px';
-    //node.style.top           = '-100000px';
+    node.style.left          = '-100000px';
+    node.style.top           = '-100000px';
     node.style.fontSize      = '30px'; // Large font size makes even subtle changes obvious
     // Reset any font properties
     //node.style.fontFamily    = 'LoadString45178';
@@ -241,7 +241,7 @@ var CSSFontLoader = function() {
     node.style.fontWeight    = weight;
     node.style.letterSpacing = '0';
     node.style.whiteSpace    = 'nowrap';
-    //node.style.opacity       = 0;
+    node.style.opacity       = 0;
     document.body.appendChild(node);
     
     return node;
