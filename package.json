@@ -1,6 +1,6 @@
 {
   "name": "css-font-loader",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "license": "UNLICENSED",
   "description": "Load fonts from CSS files and know when they're fully loaded.",
   "main": "src/loaders/CSSFontLoader/index.js",

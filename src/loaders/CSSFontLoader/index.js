@@ -328,5 +328,4 @@ var CSSFontLoader = function() {
   return api;
 }
 
-var module = {};
 module.exports = CSSFontLoader();
